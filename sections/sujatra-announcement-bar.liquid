@@ -1,0 +1,50 @@
+{{ 'component-sujatra-announcement.css' | asset_url | stylesheet_tag }}
+
+<div class="sujatra-announcement" style="background: {{ section.settings.background_color }}">
+  <div class="sujatra-announcement__content">
+    <p class="sujatra-announcement__text">
+      {{ section.settings.text }}
+      {% if section.settings.url %}
+        - <a href="{{ section.settings.url }}" class="sujatra-announcement__link">{{ section.settings.url_text }}</a>
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sujatra Announcement Bar",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "label": "Text",
+      "id": "text"
+    },
+    {
+      "type": "text",
+      "label": "Url Text",
+      "id": "url_text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "label": "Url",
+      "id": "url"
+    },
+    {
+      "type": "color_background",
+      "label": "Background Color",
+      "id": "background_color",
+      "default": "linear-gradient(to right, #CF2F85, #D7572E)"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Sujatra Announcement Bar"
+    }
+  ]
+}
+{% endschema %}

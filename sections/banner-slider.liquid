@@ -1,0 +1,183 @@
+{{ 'banner-slider.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #shopify-section-{{ section.id }}::after {
+    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
+<div class="banner-slider banner-slider--{{ section.settings.banner_size }}">
+  <div class="banner-slider__wrapper">
+    {% for block in section.blocks %}
+      <div class="banner-slider__slide">
+        {% assign desktop_image = block.settings.desktop_banner_image | image_url %}
+        {% assign mobile_image = block.settings.mobile_banner_image | image_url %}
+
+        <div
+          class="banner-slider__image-wrapper"
+          style="background-image: url({{ desktop_image }});
+        >
+          {{ desktop_image | image_url: width: 3840 | image_tag: width: section.settings.image.width }}
+        </div>
+
+        <div class="banner-slider__content banner-slider__content--{{ section.settings.desktop_content_position }}">
+          {% if block.settings.heading_1 %}
+            <h1 class="banner-slider__heading-1">{{ block.settings.heading_1 }}</h1>
+          {% endif %}
+          {% if block.settings.heading_2 %}
+            <h2 class="banner-slider__heading-2">{{ block.settings.heading_2 }}</h2>
+          {% endif %}
+          {% if block.settings.description %}
+            <div class="banner-slider__description">
+              {{ block.settings.description }}
+            </div>
+          {% endif %}
+          {% if block.settings.cta_text and block.settings.cta_url %}
+            <a href="{{ block.settings.cta_url }}" class="banner-slider__cta">{{ block.settings.cta_text }}</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  console.log({{ section.id | json }})
+</script>
+
+{% schema %}
+{
+  "name": "Banner Slider",
+  "tag": "section",
+  "class": "banner-slider",
+  "settings": [
+    {
+      "type": "range",
+      "label": "Image Overlay Opacity",
+      "id": "image_overlay_opacity",
+      "default": 40,
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%"
+    },
+    {
+      "type": "select",
+      "label": "Banner Size",
+      "id": "banner_size",
+      "default": "medium",
+      "options": [
+        {
+          "label": "Large",
+          "value": "large"
+        },
+        {
+          "label": "Medium",
+          "value": "medium"
+        },
+        {
+          "label": "Small",
+          "value": "small"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "label": "Desktop Content Position",
+      "id": "desktop_content_position",
+      "options": [
+        {
+          "label": "Top Left",
+          "value": "top-left"
+        },
+        {
+          "label": "Top Right",
+          "value": "top-right"
+        },
+        {
+          "label": "Top Center",
+          "value": "top-center"
+        },
+        {
+          "label": "Middle Left",
+          "value": "middle-left"
+        },
+        {
+          "label": "Middle Center",
+          "value": "middle-center"
+        },
+        {
+          "label": "Middle Right",
+          "value": "middle-right"
+        },
+        {
+          "label": "Bottom Left",
+          "value": "bottom-left"
+        },
+        {
+          "label": "Bottom Center",
+          "value": "bottom-center"
+        },
+        {
+          "label": "Bottom Right",
+          "value": "bottom-right"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Desktop Banner Image",
+          "id": "desktop_banner_image"
+        },
+        {
+          "type": "image_picker",
+          "label": "Mobile Banner Image",
+          "id": "mobile_banner_image"
+        },
+        {
+          "type": "text",
+          "label": "Heading 1",
+          "id": "heading_1",
+          "default": "Collections",
+          "placeholder": "Enter Heading 1"
+        },
+        {
+          "type": "text",
+          "label": "Heading 2",
+          "id": "heading_2",
+          "default": "Designer Traditional Wears",
+          "placeholder": "Enter Heading 2"
+        },
+        {
+          "type": "richtext",
+          "label": "Description",
+          "id": "description"
+        },
+        {
+          "type": "text",
+          "label": "CTA Text",
+          "id": "cta_text",
+          "default": "Shop Now",
+          "placeholder": "Enter Button Text"
+        },
+        {
+          "type": "url",
+          "label": "CTA Url",
+          "id": "cta_url"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner Slider"
+    }
+  ]
+}
+{% endschema %}

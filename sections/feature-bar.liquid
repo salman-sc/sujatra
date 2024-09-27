@@ -1,0 +1,63 @@
+<div class="feature-bar__container">
+  {% for block in section.blocks %}
+    <div class="feature-bar__feature">
+      {% if block.settings.feature_image != blank %}
+        {%- liquid
+          assign height = block.settings.feature_image.width | divided_by: block.settings.feature_image.aspect_ratio | round
+          assign sizes = '120vw'
+          assign widths = '346.82, 450, 660, 900, 1320, 1800, 2136, 2400, 3600, 3840'
+          assign fetch_priority = 'high'
+        -%}
+        <div class="feature-bar__feature-image">
+          {{
+            block.settings.feature_image
+            | image_url: width: 90
+            | image_tag:
+              height: height,
+              sizes: sizes,
+              widths: widths,
+              fetchpriority: fetch_priority,
+              class: 'feature-images__image'
+          }}
+        </div>
+      {% endif %}
+      <div class="feature-bar__feature-content">
+        <h3 class="feature-bar__feature-title">{{ block.settings.feature_title }}</h3>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Feature Bar",
+  "tag": "section",
+  "class": "feature-bar",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Feature Image",
+          "id": "feature_image"
+        },
+        {
+          "type": "textarea",
+          "label": "Feature Title",
+          "id": "feature_title",
+          "default": "24X7 CUSTOMER SUPPORT",
+          "placeholder": "24X7 CUSTOMER SUPPORT"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Bar"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,141 @@
+<section class="grid-slider">
+  <div class="grid-slider__container swiper-container">
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="grid-slider__slide swiper-slide">
+          <div class="grid-slider__image">
+            {% if block.settings.grid_image != blank %}
+              {%- liquid
+                assign height = block.settings.grid_image.width | divided_by: block.settings.grid_image.aspect_ratio | round
+                assign sizes = '120vw'
+                assign widths = '346.82, 450, 660, 900, 1320, 1800, 2136, 2400, 3600, 3840'
+                assign fetch_priority = 'high'
+              -%}
+              {{
+                block.settings.grid_image
+                | image_url: width: 3840
+                | image_tag:
+                  height: height,
+                  sizes: sizes,
+                  widths: widths,
+                  fetchpriority: fetch_priority,
+                  class: 'about-images__image'
+              }}
+            {% endif %}
+          </div>
+          <div class="grid-slider__content" style="color: {{ section.settings.content_color }}">
+            <h2 class="grid-slider__heading">{{ block.settings.heading }}</h2>
+            <p class="grid-slider__subheading">{{ block.settings.sub_heading }}</p>
+            <a
+              href="{{ block.settings.button_url }}"
+              class="grid-slider__button"
+              style="background: {{ section.settings.button_color }}"
+            >
+              {{ block.settings.button_text }}
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Slider Navigation -->
+    <div class="grid-slider__nav grid-slider__nav--prev swiper-button-prev"></div>
+    <div class="grid-slider__nav grid-slider__nav--next swiper-button-next"></div>
+
+    <!-- Slider Pagination (Optional) -->
+    <div class="grid-slider__pagination swiper-pagination"></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Grid Slider",
+  "tag": "section",
+  "class": "grid-slider",
+  "settings": [
+    {
+      "type": "select",
+      "label": "Button Color",
+      "id": "button_color",
+      "default": "transparent",
+      "options": [
+        {
+          "label": "Transparent",
+          "value": "transparent"
+        },
+        {
+          "label": "Primary",
+          "value": "#D13F61"
+        },
+        {
+          "label": "Gradient",
+          "value": "linear-gradient(to right, #CF2F85, #D7572E)"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "label": "Content Color",
+      "id": "content_color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "grid_block",
+      "name": "Grid Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Grid Image",
+          "id": "grid_image"
+        },
+        {
+          "type": "inline_richtext",
+          "label": "Heading",
+          "id": "heading",
+          "default": "DRESS"
+        },
+        {
+          "type": "inline_richtext",
+          "label": "Sub Heading",
+          "id": "sub_heading",
+          "default": "Sub Heading"
+        },
+        {
+          "type": "text",
+          "label": "Button Text",
+          "id": "button_text",
+          "default": "SHOP NOW",
+          "placeholder": "SHOP NOW"
+        },
+        {
+          "type": "url",
+          "label": "Button URL",
+          "id": "button_url"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Grid Slider"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  const swiper = new Swiper('.grid-slider__container', {
+    slidesPerView: 3, // Adjust as needed
+    spaceBetween: 20,
+
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+  });
+</script>

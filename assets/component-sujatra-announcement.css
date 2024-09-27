@@ -1,0 +1,31 @@
+.sujatra-announcement {
+  text-align: center;
+}
+.sujatra-announcement__content {
+  height: 30px;
+  padding: 8px 16px;
+}
+.sujatra-announcement__link {
+  color: #eea2a3;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.sujatra-announcement__text {
+  color: #ffffff;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14.4px;
+}
+
+@media screen and (min-width: 750px) {
+  .sujatra-announcement__content {
+    height: 43px;
+    padding: 12px 202px;
+  }
+  .sujatra-announcement__text {
+    font-size: 16px;
+    line-height: 19.2px;
+  }
+}

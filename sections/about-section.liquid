@@ -1,0 +1,140 @@
+<div class="about-section__container">
+  <div
+    class="about-section__container-heading-strip"
+    style="background: {{ section.settings.heading_background_color }};"
+  >
+    <h2 class="about-section__heading">- {{ section.settings.heading }} -</h2>
+  </div>
+  <div class="container">
+    <div class="swiper-container image-slider">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% if block.settings.image != blank %}
+            {%- liquid
+              assign height = block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round
+              assign sizes = '120vw'
+              assign widths = '242.34, 450, 660, 900, 1320, 1800, 2136, 2400, 3600, 3840'
+              assign fetch_priority = 'high'
+            -%}
+            <div class="swiper-slide image-container">
+              {{
+                block.settings.image
+                | image_url: width: 3840
+                | image_tag:
+                  height: height,
+                  sizes: sizes,
+                  widths: widths,
+                  fetchpriority: fetch_priority,
+                  class: 'about-section__image'
+              }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="description">
+      <h3 class="description__heading">{{ section.settings.description_heading }}</h3>
+      <h4 class="description__short small-hide">{{ section.settings.short_description }}</h4>
+      <div class="description__text">
+        {{ section.settings.description }}
+      </div>
+      <a
+        {% if section.settings.cta_url %}
+          href="{{ section.settings.cta_url }}"
+        {% else %}
+          role="link" aria-disabled="true"
+        {% endif %}
+        class="button button--primary"
+      >
+        {{- section.settings.cta_button_text | escape -}}
+      </a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About Section",
+  "tag": "section",
+  "class": "about-section",
+  "settings": [
+    {
+      "type": "text",
+      "label": "Heading",
+      "id": "heading",
+      "default": "art X fashion",
+      "placeholder": "enter heading"
+    },
+    {
+      "type": "inline_richtext",
+      "label": "Description Heading",
+      "id": "description_heading",
+      "default": "About Sujatra"
+    },
+    {
+      "type": "inline_richtext",
+      "label": "Short Description",
+      "id": "short_description",
+      "default": "Sujatra is the Best place for Online Designer Saree Shopping in India."
+    },
+    {
+      "type": "richtext",
+      "label": "Description",
+      "id": "description",
+      "default": "<p>Sujatra is a modern Indian fashion brand that blends innovative designs with traditional Indian arts and crafts, offering truly unique products. It's also recognized as one of the fastest-growing D2C brands in the country.</p>"
+    },
+    {
+      "type": "text",
+      "label": "CTA Button Text",
+      "id": "cta_button_text",
+      "placeholder": "Button Text",
+      "default": "READ MORE"
+    },
+    {
+      "type": "url",
+      "label": "CTA URL",
+      "id": "cta_url"
+    },
+    {
+      "type": "color_background",
+      "label": "Heading Background Color",
+      "id": "heading_background_color",
+      "default": "linear-gradient(to right, #CF2F85, #D7572E)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_blocks",
+      "name": "Image Blocks",
+      "settings": [
+        {
+          "type": "image_picker",
+          "label": "Image",
+          "id": "image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Section"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const swiper = new Swiper('.swiper-container', {
+      slidesPerView: 3,
+      spaceBetween: 10,
+      centeredSlides: true,
+      loop: true,
+      breakpoints: {
+        768: {
+          slidesPerView: 4,
+        },
+      },
+    });
+  });
+</script>

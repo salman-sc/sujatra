@@ -1,0 +1,112 @@
+<div class="about-images">
+  {% for block in section.blocks %}
+    <div class="about-images__block">
+      <a href="{{ block.settings.select_url }}">
+        {% if block.settings.select_image != blank %}
+          {%- liquid
+            assign height = block.settings.select_image.width | divided_by: block.settings.select_image.aspect_ratio | round
+            assign sizes = '120vw'
+            assign widths = '346.82, 450, 660, 900, 1320, 1800, 2136, 2400, 3600, 3840'
+            assign fetch_priority = 'high'
+          -%}
+          {{
+            block.settings.select_image
+            | image_url: width: 3840
+            | image_tag:
+              height: height,
+              sizes: sizes,
+              widths: widths,
+              fetchpriority: fetch_priority,
+              class: 'about-images__image'
+          }}
+        {% endif %}
+      </a>
+      <div class="about-images__content about-images__content--{{ block.settings.content_align }}">
+        <p class="about-images__text">{{ block.settings.image_text }}</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "About Image Section",
+  "tag": "section",
+  "class": "about-image-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "label": "Image Text",
+          "id": "image_text",
+          "default": "Innovative Design"
+        },
+        {
+          "type": "image_picker",
+          "label": "Select Image",
+          "id": "select_image"
+        },
+        {
+          "type": "url",
+          "label": "Select Url",
+          "id": "select_url"
+        },
+        {
+          "type": "select",
+          "id": "content_align",
+          "options": [
+            {
+              "value": "top-left",
+              "label": "Top Left"
+            },
+            {
+              "value": "top-center",
+              "label": "Top Center"
+            },
+            {
+              "value": "top-right",
+              "label": "Top Right"
+            },
+            {
+              "value": "middle-left",
+              "label": "Middle Left"
+            },
+            {
+              "value": "middle-center",
+              "label": "Middle Center"
+            },
+            {
+              "value": "middle-right",
+              "label": "Middle Right"
+            },
+            {
+              "value": "bottom-left",
+              "label": "Bottom Left"
+            },
+            {
+              "value": "bottom-center",
+              "label": "Bottom Center"
+            },
+            {
+              "value": "bottom-right",
+              "label": "Bottom Right"
+            }
+          ],
+          "default": "middle-center",
+          "label": "Middle Center",
+          "info": "Content Alignment"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Image Section"
+    }
+  ]
+}
+{% endschema %}
